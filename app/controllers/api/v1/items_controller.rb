@@ -1,5 +1,5 @@
 class Api::V1::ItemsController < ApplicationController
-
+protect_from_forgery with: :null_session
   def index
     @items = Item.all
 
@@ -17,32 +17,33 @@ class Api::V1::ItemsController < ApplicationController
     @item = Item.new(items_params)
 
     if @item.save
-     flash[:success] = 'New Item created successfully'
+      render json: @item, status: 200
     else 
-         flash.now[:error] = 'An error occurred : Item could not be created'
+       render json: { error: @item.errors.messages }, status: :unprocessable_entity
     end
   end
-
 
     def update
-    @item = Item.find_by(slug: params[:slug])
+    @item =  Item.find_by(slug: params[:slug])
 
-    if @item.update(items_params)
-     flash[:success] = 'Item updated successfully'
+     if @item.update(items_params)
+      render json: @item, status: 200
     else 
-         flash.now[:error] = 'An error occurred : Item could not be Updated'
-    end
-  end
-
+       render json: { error: @item.errors.messages }, status: :unprocessable_entity
+     end
+   end
+ 
     def destroy
      @item = Item.find_by(slug: params[:slug])
 
     if @item.destroy
-     flash[:success] = 'Item deleted successfully'
+    render json: @item, status: 200 
     else 
-         flash.now[:error] = 'An error occurred : Item could not be deleted'
+       render json: { error: @item.errors.messages }, status: :unprocessable_entity
     end
   end
+
+
   private
 
   def items_params
