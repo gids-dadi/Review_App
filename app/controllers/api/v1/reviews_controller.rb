@@ -1,22 +1,27 @@
 class Api::V1::ReviewsController < ApplicationController
+  protect_from_forgery with: :null_session
   
   def create
-    review = Review.new(review_params)
+    @review = Review.new(review_params)
 
- if review.save
-     flash[:success] = 'New Review created successfully'
+ if @review.save
+  render json: @review, status: 200
+    #  flash[:success] = 'New Review created successfully'
     else 
-         flash.now[:error] = 'An error occurred : Review could not be created'
+        render json: { error: @review.errors.messages }, status: :unprocessable_entity
+        #  flash.now[:error] = 'An error occurred : Review could not be created'
     end
   end
 
     def destroy
-    review = Review.find(params[:id])
+    @review = Review.find(params[:id])
 
- if review.destroy
+ if @review.destroy
+    render json: @review, status: 200
      flash[:success] = 'Review deleted successfully'
     else 
-         flash.now[:error] = 'An error occurred : Review could not be deleted'
+      render json: { error: @review.errors.messages }, status: :unprocessable_entity
+      # flash.now[:error] = 'An error occurred : Review could not be deleted'
     end
   end
 
