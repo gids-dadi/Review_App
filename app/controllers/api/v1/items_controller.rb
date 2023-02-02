@@ -2,7 +2,7 @@ class Api::V1::ItemsController < ApplicationController
   protect_from_forgery with: :null_session
   def index
     @items = Item.all
-    # @reviews = @items
+
 
     render json: @items
   end
