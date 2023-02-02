@@ -1,5 +1,5 @@
 class Api::V1::ItemsController < ApplicationController
-protect_from_forgery with: :null_session
+  protect_from_forgery with: :null_session
   def index
     @items = Item.all
     # @reviews = @items
@@ -8,42 +8,40 @@ protect_from_forgery with: :null_session
   end
 
   def show
-  @item = Item.find_by(slug: params[:slug])
+    @item = Item.find_by(slug: params[:slug])
 
-      render json: @item
+    render json: @item
   end
-
 
   def create
     @item = Item.new(items_params)
 
     if @item.save
       render json: @item, status: 200
-    else 
-       render json: { error: @item.errors.messages }, status: :unprocessable_entity
+    else
+      render json: { error: @item.errors.messages }, status: :unprocessable_entity
     end
   end
 
-    def update
-    @item =  Item.find_by(slug: params[:slug])
+  def update
+    @item = Item.find_by(slug: params[:slug])
 
-     if @item.update(items_params)
+    if @item.update(items_params)
       render json: @item, status: 200
-    else 
-       render json: { error: @item.errors.messages }, status: :unprocessable_entity
-     end
-   end
- 
-    def destroy
-     @item = Item.find_by(slug: params[:slug])
+    else
+      render json: { error: @item.errors.messages }, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @item = Item.find_by(slug: params[:slug])
 
     if @item.destroy
-    render json: @item, status: 200 
-    else 
-       render json: { error: @item.errors.messages }, status: :unprocessable_entity
+      render json: @item, status: 200
+    else
+      render json: { error: @item.errors.messages }, status: :unprocessable_entity
     end
   end
-
 
   private
 
