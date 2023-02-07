@@ -6,9 +6,11 @@ import * as ReactDom from "react-dom";
 const App = () => {
   return (
     <div className="content">
-      <h1>Hello World! Welcome to the Rails 7 Course with react</h1>
-      <p>This is a good start of my project</p>
-      <p>This is the App components</p>
+      <Router>
+        <Routes>
+          <Route path="/" component={App} />
+        </Routes>
+      </Router>
     </div>
   );
 };
